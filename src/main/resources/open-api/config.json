@@ -1,0 +1,11 @@
+{
+  "developerName": "Ricardo Jara",
+  "developerEmail": "ricardojara01@gmail.com",
+  "modelPackage": "com.ricardocreates.model",
+  "apiPackage": "com.ricardocreates.api",
+  "dateLibrary": "java8",
+  "useBeanValidation": true,
+  "interfaceOnly": true,
+  "useOptional": true,
+  "library": "spring-boot"
+}

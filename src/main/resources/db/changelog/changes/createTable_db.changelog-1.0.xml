@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:pro="http://www.liquibase.org/xml/ns/pro" 
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+	<changeSet id="createTable_db.changelog-1.0" author="Ricardo">
+		<createTable schemaName="COMPANY" tableName="BRAND">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_brand" />
+			</column>
+			<column name="name" type="varchar(250)">
+			</column>
+		</createTable>
+		
+		<createTable schemaName="COMPANY" tableName="PRODUCT">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_product" />
+			</column>
+			<column name="name" type="varchar(250)">
+			</column>
+		</createTable>
+		
+		<createTable schemaName="COMPANY" tableName="PRICE">
+			<column name="id" type="bigint">
+				<constraints primaryKey="true" primaryKeyName="pk_price" />
+			</column>
+			
+			<column name="start_date" type="datetime" />
+			<column name="end_date" type="datetime" />
+			
+			<column name="price_list" type="bigint" />
+			<column name="priority" type="bigint" />
+			<column name="product_id" type="bigint" />
+			<column name="product_price" type="currency" />
+			<column name="curr" type="varchar(100)" />
+			
+			<column name="brand_id" type="bigint" />
+		</createTable>
+		
+		<addAutoIncrement tableName="BRAND" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+		<addAutoIncrement tableName="PRICE" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+		
+		<addForeignKeyConstraint constraintName="fk_price_brand" baseTableName="PRICE" baseColumnNames="brand_id"  referencedTableName="BRAND" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="fk_price_product" baseTableName="PRICE" baseColumnNames="product_id"  referencedTableName="PRODUCT" referencedColumnNames="id" />
+	</changeSet>
+</databaseChangeLog>
