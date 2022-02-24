@@ -1,107 +1,158 @@
-openapi: "3.0.0"
+openapi: 3.0.2
 info:
+  title: Products
+  description: 'API to manage products from ManoMano'
   version: 1.0.0
-  title: 'API to show products price'
-  description: 'API to manage products'
-servers:
-  - url: http://localhost:8080/
+tags:
+  - name: Products
+    description: Product system
 paths:
   /product-price:
     get:
-      summary: List all pets
-      operationId: listPets
       tags:
-        - pets
+        - Product Price
+      summary: Returns information about product price
+      operationId: get product price
       parameters:
-        - name: limit
-          in: query
-          description: How many items to return at one time (max 100)
-          required: false
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: A paged array of pets
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:    
-              schema:
-                $ref: "#/components/schemas/Pets"
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      summary: Create a pet
-      operationId: createPets
-      tags:
-        - pets
-      responses:
-        '201':
-          description: Null response
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /pets/{petId}:
-    get:
-      summary: Info for a specific pet
-      operationId: showPetById
-      tags:
-        - pets
-      parameters:
-        - name: petId
-          in: path
+        - in: query
+          name: date
+          allowEmptyValue: false
+          description: date price to get (yyyy-MM-ddThh:mm:ssZ)
           required: true
-          description: The id of the pet to retrieve
           schema:
             type: string
+            format: date-time
+        - in: query
+          name: productId
+          allowEmptyValue: false
+          description: product which we want figure out price
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: brandId
+          allowEmptyValue: false
+          description: Brand id
+          required: true
+          schema:
+            type: integer
+            format: intg64
       responses:
-        '200':
-          description: Expected response to a valid request
+        200:
+          description: Product and its price
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pet"
-        default:
-          description: unexpected error
+                $ref: '#/components/schemas/ProductPrice'
+              example:
+                productId: 44789
+                startDate: "2021-01-01 12:45:32"
+                endDate: "2021-01-09 09:07:06"
+                finalPrice: 1.56
+                currency: "EUR"
+        400:
+          description: Malformed syntax of the request params
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Problem'
+              example:
+                status: 400
+                title: Bad Request
+                detail: Wrong value in the Expiration Date parameter
+        401:
+          description: Authentication has failed or not yet been provided
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                status: 401
+                title: Unauthorized
+                detail: Wrong credentials
+        500:
+          description: Server encountered an unespected problem
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                status: 500
+                title: Internal server error
+                detail: Unexpected server error
 components:
   schemas:
-    Brand:
+    ProductPrice:
+      description: Product with its price
       type: object
-      required:
-        - id
-        - name
       properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-    Price:
-      type: object
-    
-    Error:
-      type: object
-      required:
-        - code
-        - message
-      properties:
-        code:
+        product:
+          $ref: '#/components/schemas/product'
+        brand:
+          $ref: '#/components/schemas/brand'
+        priceId:
+          description: Price ID
           type: integer
           format: int32
-        message:
+        startDate:
+          description: Start date
           type: string
+          format: date-time
+        endDate:
+          description: End date
+          type: string
+          format: date-time
+        finalPrice:
+          description: Final Price
+          type: number
+          format: double
+        currency:
+          description: Currency
+          type: string
+    product:
+      description: Product object returned by the API
+      type: object
+      properties:
+        id:
+          description: Product identifier
+          type: integer
+          format: int32
+        name:
+          description: Name of product
+          type: string
+    brand:
+      description: Brand object returned by the API
+      type: object
+      properties:
+        id:
+          description: Brand identifier
+          type: number
+          format: int32
+        name:
+          description: Name of Brand
+          type: string
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: An absolute URI that identifies the problem type
+          default: 'about:blank'
+        title:
+          type: string
+          description: A short, summary of the problem type
+        status:
+          type: integer
+          format: int32
+          description: |
+            The HTTP status code generated by the origin server for this occurrence
+            of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+        detail:
+          type: string
+          description: Detail of Problem
+            

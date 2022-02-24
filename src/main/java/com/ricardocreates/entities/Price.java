@@ -9,9 +9,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ricardocreates.entities.enums.Currency;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table (schema = "COMPANY", name = "PRICE")
 public class Price {
@@ -44,9 +48,11 @@ public class Price {
 	//better all LAZY
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="BRAND_ID")
+	@ToString.Exclude
 	private Brand brand;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT_ID")
+	@ToString.Exclude
 	private Product product;
 }
