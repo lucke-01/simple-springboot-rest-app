@@ -18,40 +18,40 @@ Date example format
 
 #Interesting Stack to be mentioned:
 
-#####swagger open api
+##### swagger open api
 
 In order create an usable and documented REST API
 
-#####LiquidBase
+##### LiquidBase
 
 In order to database changes and initialization.
 
-#####MapStrut
+##### MapStrut
 
 In order to convert entities in data transfer object improving performance
 
-#####EhCache
+##### EhCache
 
 In order to caching in service layer.
 
-#####Junit + Mockito
+##### Junit + Mockito
 
 In order unit test.
 
-#####MockMVC
+##### MockMVC
 
 In order to Integration test.
 
-#####Lombok
+##### Lombok
 
 In order to avoid to implement getter and setter equals toString and so on...
 
-#####Spring data JPA
+##### Spring data JPA
 
 In order to using JPA create queries in a easier way.
 
 
-##Tasks
+## Tasks
 
 En la base de datos de comercio electrónico de la compañía disponemos de la tabla PRICES que refleja el precio final (pvp)
  y la tarifa que aplica a un producto de una cadena entre unas fechas determinadas.
